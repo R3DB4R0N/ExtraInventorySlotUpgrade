@@ -106,12 +106,13 @@ assemblies rather than a NuGet package, so it always compiles against your exact
 2. `dotnet build -c Release`
 
 The DLL is copied straight into `BepInEx/plugins/ExtraInventorySlotUpgrade/` after every build.
-To produce the Thunderstore zip:
 
-```
-powershell -ExecutionPolicy Bypass -File tools/package.ps1
-```
 
 ## Credits
 
 Built on [REPOLib](https://thunderstore.io/c/repo/p/Zehs/REPOLib/) by Zehs.
+
+## Thunderstore link: 
+
+[ExtraInventorySlotUpgrade](https://thunderstore.io/c/repo/p/R3DB4R0N/ExtraInventorySlotUpgrade/)
+
