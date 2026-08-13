@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <Import Project="Directory.Repo.props" />
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <AssemblyName>ExtraInventorySlotUpgrade</AssemblyName>
+    <RootNamespace>ExtraInventorySlotUpgrade</RootNamespace>
+    <Product>Extra Inventory Slot</Product>
+    <Version>1.0.0</Version>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <!-- CS0436: publicized Assembly-CSharp re-declares a few compiler-support types. -->
+    <NoWarn>$(NoWarn);CS0436;NU1701</NoWarn>
+    <ManagedDirectory>$(GameDirectory)REPO_Data\Managed\</ManagedDirectory>
+    <CoreDirectory>$(BepInExDirectory)core\</CoreDirectory>
+    <PluginsDirectory>$(BepInExDirectory)plugins\</PluginsDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.*" PrivateAssets="all" IncludeAssets="build" />
+  </ItemGroup>
+
+  <!-- The prop's front-panel art, baked into the DLL so the mod stays a single file. -->
+  <ItemGroup>
+    <EmbeddedResource Include="Pack-texture.png" LogicalName="ExtraInventorySlotUpgrade.Pack-texture.png" />
+  </ItemGroup>
+
+  <!-- Game code. Publicized so we can touch Inventory.inventorySpots / spotsFeched (both internal). -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(ManagedDirectory)Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+      <Publicize>true</Publicize>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Unity. Referenced straight out of the install so we are always version-exact (2022.3.67f2). -->
+  <ItemGroup>
+    <Reference Include="$(ManagedDirectory)UnityEngine.dll;$(ManagedDirectory)UnityEngine.CoreModule.dll;$(ManagedDirectory)UnityEngine.UI.dll;$(ManagedDirectory)UnityEngine.UIModule.dll;$(ManagedDirectory)UnityEngine.IMGUIModule.dll;$(ManagedDirectory)UnityEngine.TextRenderingModule.dll;$(ManagedDirectory)UnityEngine.TextCoreTextEngineModule.dll;$(ManagedDirectory)UnityEngine.AudioModule.dll;$(ManagedDirectory)UnityEngine.PhysicsModule.dll;$(ManagedDirectory)UnityEngine.AnimationModule.dll;$(ManagedDirectory)UnityEngine.ParticleSystemModule.dll;$(ManagedDirectory)UnityEngine.ImageConversionModule.dll;$(ManagedDirectory)UnityEngine.InputLegacyModule.dll;$(ManagedDirectory)Unity.InputSystem.dll;$(ManagedDirectory)Unity.TextMeshPro.dll;$(ManagedDirectory)Unity.Localization.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Photon -->
+  <ItemGroup>
+    <Reference Include="$(ManagedDirectory)PhotonUnityNetworking.dll;$(ManagedDirectory)PhotonRealtime.dll;$(ManagedDirectory)Photon3Unity3D.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- BepInEx + Harmony + REPOLib -->
+  <ItemGroup>
+    <Reference Include="$(CoreDirectory)BepInEx.dll;$(CoreDirectory)0Harmony.dll;$(PluginsDirectory)REPOLib.dll">
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Auto-deploy into the manual plugins folder after every build. -->
+  <Target Name="DeployToGame" AfterTargets="Build" Condition="Exists('$(BepInExDirectory)')">
+    <MakeDir Directories="$(PluginDeployDirectory)" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(PluginDeployDirectory)" />
+    <Message Importance="high" Text="Deployed $(TargetFileName) -> $(PluginDeployDirectory)" />
+  </Target>
+
+</Project>

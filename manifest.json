@@ -1,0 +1,10 @@
+{
+  "name": "ExtraInventorySlotUpgrade",
+  "version_number": "1.0.0",
+  "website_url": "",
+  "description": "Adds a purchasable pink upgrade that grants one extra inventory slot, up to 6 slots per player. Number keys 4/5/6 select them.",
+  "dependencies": [
+    "BepInEx-BepInExPack-5.4.2305",
+    "Zehs-REPOLib-4.2.0"
+  ]
+}

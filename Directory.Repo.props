@@ -1,0 +1,11 @@
+<Project>
+  <!--
+    Machine-local paths. Sinan installs mods manually into the game folder's BepInEx,
+    NOT via r2modman / Thunderstore Mod Manager.
+  -->
+  <PropertyGroup>
+    <GameDirectory>C:\Program Files (x86)\Steam\steamapps\common\REPO\</GameDirectory>
+    <BepInExDirectory>$(GameDirectory)BepInEx\</BepInExDirectory>
+    <PluginDeployDirectory>$(BepInExDirectory)plugins\ExtraInventorySlotUpgrade\</PluginDeployDirectory>
+  </PropertyGroup>
+</Project>
